@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Photo Viewer</title>
+
+<style>
+body{
+
+ background:#FFF1CC;	
+}
+
+
+h1{
+ text-decoration: underline;
+	
+}
+
+img{
+	
+padding: 1px;
+border:1px solid #021a40;
+	
+	
+	
+}
+</style>
+
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+<link href="favicon.ico" rel="icon" type="image/x-icon" />
+</head>
+
+<body>
+<script>
+var start;
+var end;
+var currElement;
+var photoCollection;
+var path;
+var name;
+var temp;
+
+  function getArrayPhotosNames (){
+    path = document.getElementById("path").value;
+	end = document.getElementById("end").value;
+	start = document.getElementById("start").value;
+	name = document.getElementById("common").value;
+	photoCollection = new Array(end);
+	
+	  if(start>end){
+          alert("Invalid Numbers");
+        }
+	
+	var incr = start;
+	for(var i = 0;i <= (end-start); i++){
+		temp = path+name+incr+".jpg";
+		photoCollection[i] =  temp;
+		incr++;
+	}
+	currElement = start;
+	return photoCollection;
+	
+  }
+  
+  function slideshow(){
+	getArrayPhotosNames();
+	document.getElementById("currPic").setAttribute("src",photoCollection[currElement]);
+	
+  }
+  
+  
+  
+  
+  function previous(){
+	--currElement;
+	document.getElementById("currPic").setAttribute("src",photoCollection[currElement]);
+  }
+  
+  
+  
+  function next(){
+	++currElement;
+	if(currElement >= end){
+	currElement = start;
+	document.getElementById("currPic").setAttribute("src",photoCollection[currElement]);
+	}else{
+		document.getElementById("currPic").setAttribute("src",photoCollection[currElement]);
+	}
+
+	
+  }
+  
+  function randomize(){
+	photoCollection = randomizeArray(photoCollection);
+	document.getElementById("currPic").setAttribute("src",photoCollection[currElement]);
+	
+	
+  }
+  
+  
+ 
+  function randomizeArray(array){
+  var len = (array.length) -1;
+  var random;
+  var index;
+ for(var i = len; i >=0;i--){
+	 random = Math.floor(Math.random()*(i+1));
+	 index = array[random];
+	 
+	 array[random] = array[i];
+	 array[i] = index;
+	
+     }
+  return array;
+}
+
+
+     function autoSlideShow() {
+        slideshow();
+        clearInterval(window.intervalID);
+        window.intervalID=setInterval(next, 1000);
+      }
+
+     function stopAutoShow() {
+        clearInterval(window.intervalID);
+      }
+
+	
+  
+  
+     
+
+      function autoRandomSlideShow() {
+        randomize();
+        clearInterval(window.intervalID);
+        window.intervalID=setInterval(next, 1000);
+      }
+
+    
+
+  
+  
+</script>	
+	
+	
+	
+<div>
+<p><h1>Viewer</h1></p>
+
+<p> <img id="currPic" src="initialImage.jpg" alt ="Photo Viewer Image" height="426" onclick = "next()"></p>
+<hr>
+
+<form>
+    
+<p>Photo's Folder<input type="text" name="folder" value="umcp/" id="path"/><br /><br />
+	Common Name<input type="text" name="name" value="college" id="common" /><br /><br />
+	Start Photo Number<input type="text" name="start" value ="1" id="start"/>
+    End Photo Number:<input type="text" name="end"  value="1" id="end"/><br /><br />
+</p>   
+    
+
+</div>  
+    
+</form>
+
+<button onclick="slideshow()">Slide Show</button>
+<button onclick="randomize()">Random Slide Show</button>
+<button onclick="previous()">Previous Slide</button>
+<button onclick="next()">Next Slide</button>
+
+<button onclick="autoSlideShow()">Auto Slide Show</button>
+<button onclick="autoRandomSlideShow()">Auto Random Slide Show</button>
+<button onclick="stopAutoShow()">Stop Auto Show</button>
+<input type="reset" name="Reset" value="Reset">
+</body>
+</html>
